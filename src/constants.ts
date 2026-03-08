@@ -28,24 +28,69 @@ export const PET_IMAGES = {
 export const PHOTO_GALLERY = [
   {
     id: '1',
-    url: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?q=80&w=800&auto=format&fit=crop',
-    caption: 'Descobrindo o amor'
+    url: 'https://i.postimg.cc/pLhsJgVL/01-Os-papais-decidiram-que-a-familia-precisava-crescer.jpg',
+    caption: 'Papai e mamãe contaram para as manas: a família vai crescer!'
   },
   {
     id: '2',
-    url: 'https://images.unsplash.com/photo-1544126592-807ade215a0b?q=80&w=800&auto=format&fit=crop',
-    caption: 'Sapatinhos prontos'
+    url: 'https://i.postimg.cc/x1wtxtqc/02-Preparativos-e-exames-havia-muito-desejo-pela-minha-vinda.jpg',
+    caption: 'Muitos exames e consultas... havia muito desejo pela minha vinda!'
   },
   {
     id: '3',
-    url: 'https://images.unsplash.com/photo-1506806745989-1382453c0d76?q=80&w=800&auto=format&fit=crop',
-    caption: 'Esperando você'
+    url: 'https://i.postimg.cc/52YsSZ94/03-Ate-que-dia-03-de-outubro-dei-as-caras.jpg',
+    caption: 'Até que dia 03/10/2025 eu dei as caras!'
   },
   {
     id: '4',
-    url: 'https://images.unsplash.com/photo-1498644686561-197e4c5b9c02?q=80&w=800&auto=format&fit=crop',
-    caption: 'Cada detalhe importa'
-  }
+    url: 'https://i.postimg.cc/qvPjbjg3/04-Dia-20-de-outubro-os-papais-ouviram-meu-s2-pela-primeira-vez.jpg',
+    caption: 'Dia 20/10 os papais ouviram meu coração pela primeira vez. Tun Tun Tun!'
+  },
+  {
+    id: '5',
+    url: 'https://i.postimg.cc/P5g232N8/05-A-alegria-de-ir-no-ultrassom.jpg',
+    caption: 'Todo ultrassom era o dia mais feliz — eles podiam me ver!'
+  },
+  {
+    id: '6',
+    url: 'https://i.postimg.cc/qvPjbjgs/06-Dr-Gustavo-sempre-tranquilizando-os-papais.jpg',
+    caption: 'Dr. Gustavo sempre tranquilizava os papais: tudo bem por aqui!'
+  },
+  {
+    id: '7',
+    url: 'https://i.postimg.cc/MpCdPdXy/07-Faco-pose.jpg',
+    caption: 'E eu ajudo dando pose pra foto. Já nasci fotogênico!'
+  },
+  {
+    id: '8',
+    url: 'https://i.postimg.cc/6pkYjYTL/08-Ja-falei-crescendo.jpg',
+    caption: 'Estou crescendo super bem — a barriga da mamãe não deixa mentir!'
+  },
+  {
+    id: '9',
+    url: 'https://i.postimg.cc/nLqT6BQq/09-barriga-crescendo.jpg',
+    caption: 'Já falei que estou crescendo? Porque estou!'
+  },
+  {
+    id: '10',
+    url: 'https://i.postimg.cc/N0RbWmr8/10-O-tico-mais-lindo-do-mundo-(desculpa-papai).jpg',
+    caption: 'O papai e o Dr. Gustavo têm uma teoria... mas eu sei que sou só um gurizão saudável!'
+  },
+  {
+    id: '11',
+    url: 'https://i.postimg.cc/N0RbWmrJ/11-ja-sei-que-vou-ser-mimado.jpg',
+    caption: 'Ainda não conheço o mundo lá fora, mas já sei que vou ser muito mimado!'
+  },
+  {
+    id: '12',
+    url: 'https://i.postimg.cc/wBDFSLs4/12-Familia-(achei-linda).jpg',
+    caption: 'Meu primeiro réveillon foi em família. No próximo, já estarei no carrinho!'
+  },
+  {
+    id: '13',
+    url: 'https://i.postimg.cc/cJfTVwny/13-Nos-3.jpg',
+    caption: 'Dia 25/04 eu, mamãe e papai te esperamos. Os papais disseram que tu também me ama — e eu já quero te conhecer!'
+  },
 ];
 
 export const GIFTS: Gift[] = [
@@ -228,6 +273,7 @@ export const TIMELINE_EVENTS: TimelineEvent[] = [
     icon: 'baby'
   }
 ];
+
 
 
 
