@@ -3,48 +3,11 @@ import type { GuestMessage } from '../types';
 import { Send, Sparkles, MessageSquareHeart, Lock, Unlock, Heart, Reply, Trash2, Pencil, Crown, AlertCircle } from 'lucide-react';
 import { generateGuestMessage } from '../services/geminiService';
 import Reveal from './Reveal';
-
-const STORAGE_KEY = 'cha-francisco-messages';
-
-const DEFAULT_MESSAGES: GuestMessage[] = [
-  {
-    id: '1',
-    author: 'Vovó Maria',
-    message: 'Meu netinho lindo, estamos contando os dias para ver seu rostinho! 🦁',
-    timestamp: new Date('2025-11-25T15:00:00'),
-    reply: {
-      author: 'Papai e Mamãe',
-      message: 'Obrigado Vovó! O Francisco já está chutando só de ouvir sua voz.',
-      timestamp: new Date('2025-11-25T16:00:00')
-    }
-  },
-  {
-    id: '2',
-    author: 'Tio João',
-    message: 'Prepare-se Francisco, o tio vai te ensinar a jogar bola! ⚽',
-    timestamp: new Date('2025-11-25T15:30:00')
-  }
-];
-
-const loadMessages = (): GuestMessage[] => {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      return parsed.map((msg: GuestMessage) => ({
-        ...msg,
-        timestamp: new Date(msg.timestamp),
-        reply: msg.reply ? { ...msg.reply, timestamp: new Date(msg.reply.timestamp) } : undefined
-      }));
-    }
-  } catch {
-    // se der erro, usa padrão
-  }
-  return DEFAULT_MESSAGES;
-};
+import { db } from '../firebase';
+import { collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
 
 const GuestBook: React.FC = () => {
-  const [messages, setMessages] = useState<GuestMessage[]>(loadMessages);
+  const [messages, setMessages] = useState<GuestMessage[]>([]);
   const [name, setName] = useState('');
   const [messageText, setMessageText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -52,32 +15,45 @@ const GuestBook: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-    } catch {
-      // localStorage cheio ou bloqueado
-    }
-  }, [messages]);
+    const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const msgs = snapshot.docs.map(doc => ({
+        id: doc.id,
+        author: doc.data().author,
+        message: doc.data().message,
+        timestamp: doc.data().timestamp?.toDate() || new Date(),
+        reply: doc.data().reply || undefined,
+      })) as GuestMessage[];
+      setMessages(msgs);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const formatDate = (dateInput: Date | string) => {
     const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
     return new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(date);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !messageText.trim()) return;
-    const newMessage: GuestMessage = {
-      id: Date.now().toString(),
-      author: name,
-      message: messageText,
-      timestamp: new Date()
-    };
-    setMessages([newMessage, ...messages]);
-    setName('');
-    setMessageText('');
+    try {
+      await addDoc(collection(db, 'messages'), {
+        author: name,
+        message: messageText,
+        timestamp: serverTimestamp(),
+        reply: null,
+      });
+      setName('');
+      setMessageText('');
+    } catch (error) {
+      console.error('Erro ao salvar mensagem:', error);
+      alert('Erro ao enviar mensagem. Tente novamente.');
+    }
   };
 
   const handleGenerateMessage = async (tone: 'funny' | 'emotional' | 'short', senderName: string) => {
@@ -120,15 +96,15 @@ const GuestBook: React.FC = () => {
     else if (password !== null) { alert("Senha incorreta. Tente novamente."); }
   };
 
-  const handleDeleteMessage = (id: string) => {
+  const handleDeleteMessage = async (id: string) => {
     if (window.confirm("Tem certeza que deseja apagar esta mensagem permanentemente?")) {
-      setMessages(messages.filter(msg => msg.id !== id));
+      await deleteDoc(doc(db, 'messages', id));
     }
   };
 
-  const handleDeleteReply = (id: string) => {
+  const handleDeleteReply = async (id: string) => {
     if (window.confirm("Tem certeza que deseja apagar sua resposta?")) {
-      setMessages(messages.map(msg => msg.id === id ? { ...msg, reply: undefined } : msg));
+      await updateDoc(doc(db, 'messages', id), { reply: null });
     }
   };
 
@@ -136,9 +112,11 @@ const GuestBook: React.FC = () => {
     if (msg.reply) { setReplyingTo(msg.id); setReplyText(msg.reply.message); }
   };
 
-  const handleSubmitReply = (messageId: string) => {
+  const handleSubmitReply = async (messageId: string) => {
     if (!replyText.trim()) return;
-    setMessages(messages.map(msg => msg.id === messageId ? { ...msg, reply: { author: 'Papai e Mamãe', message: replyText, timestamp: new Date() } } : msg));
+    await updateDoc(doc(db, 'messages', messageId), {
+      reply: { author: 'Papai e Mamãe', message: replyText, timestamp: new Date().toISOString() }
+    });
     setReplyingTo(null);
     setReplyText('');
   };
@@ -208,6 +186,18 @@ const GuestBook: React.FC = () => {
 
           <Reveal delay={300} className="h-full">
             <div className="space-y-8 max-h-[800px] overflow-y-auto pr-2 pb-8">
+              {loading && (
+                <div className="text-center py-12 text-gray-400">
+                  <div className="animate-spin w-8 h-8 border-2 border-safari-green border-t-transparent rounded-full mx-auto mb-3"></div>
+                  <p className="text-sm">Carregando mensagens...</p>
+                </div>
+              )}
+              {!loading && messages.length === 0 && (
+                <div className="text-center py-12 text-gray-400">
+                  <MessageSquareHeart size={48} className="mx-auto mb-3 opacity-30" />
+                  <p className="text-sm">Seja o primeiro a deixar um recado! 💛</p>
+                </div>
+              )}
               {messages.map((msg) => (
                 <div key={msg.id} className="relative group">
                   <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative z-10 hover:shadow-md transition-shadow animate-border-pulse">
@@ -223,7 +213,7 @@ const GuestBook: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         {isAdmin && (
-                          <button onClick={() => handleDeleteMessage(msg.id)} className="text-gray-300 hover:text-red-500 transition-colors p-1" title="Apagar mensagem">
+                          <button onClick={() => handleDeleteMessage(msg.id)} className="text-gray-300 hover:text-red-500 transition-colors p-1">
                             <Trash2 size={18} />
                           </button>
                         )}
@@ -273,11 +263,11 @@ const GuestBook: React.FC = () => {
                             <span className={`text-xs font-bold uppercase tracking-wider ${isAdmin ? 'text-orange-700' : 'text-safari-brown'}`}>Família Respondeu</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-400">{formatDate(msg.reply.timestamp)}</span>
+                            <span className="text-xs text-gray-400">{msg.reply.timestamp ? formatDate(msg.reply.timestamp) : ''}</span>
                             {isAdmin && (
                               <div className="flex gap-1 ml-2 opacity-0 group-hover/reply:opacity-100 transition-opacity">
-                                <button onClick={() => handleEditReply(msg)} className="p-1 text-gray-400 hover:text-orange-600 transition-colors" title="Editar resposta"><Pencil size={14} /></button>
-                                <button onClick={() => handleDeleteReply(msg.id)} className="p-1 text-gray-400 hover:text-red-500 transition-colors" title="Apagar resposta"><Trash2 size={14} /></button>
+                                <button onClick={() => handleEditReply(msg)} className="p-1 text-gray-400 hover:text-orange-600 transition-colors"><Pencil size={14} /></button>
+                                <button onClick={() => handleDeleteReply(msg.id)} className="p-1 text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
                               </div>
                             )}
                           </div>
