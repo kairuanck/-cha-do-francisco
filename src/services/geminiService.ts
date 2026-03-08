@@ -1,12 +1,12 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
-
 export const generateGuestMessage = async (tone: 'funny' | 'emotional' | 'short', senderName: string): Promise<string> => {
   try {
-    if (!import.meta.env.VITE_GEMINI_API_KEY) {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
       throw new Error("API_KEY não configurada no ambiente.");
     }
+    const ai = new GoogleGenAI({ apiKey });
 
     const prompt = `
       Você está ajudando um convidado a escrever uma mensagem curta e carinhosa para o guestbook do Chá de Fraldas do bebê Francisco.
