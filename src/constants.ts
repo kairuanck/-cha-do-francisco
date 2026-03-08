@@ -21,8 +21,8 @@ export const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVx-H
 export const BACKGROUND_MUSIC_URL = "https://files.catbox.moe/4vwe0e.mp3";
 
 export const PET_IMAGES = {
-  mel: "https://i.postimg.cc/sGZTCwD5/mel.png",
-  bolacha: "https://i.postimg.cc/jnJMYZdN/bolacha.jpg"
+  mel: "https://i.postimg.cc/bN8YVy86/mel.jpg",
+  bolacha: "https://i.postimg.cc/MKxZ36xd/bolacha.jpg"
 };
 
 export const PHOTO_GALLERY = [
@@ -228,3 +228,4 @@ export const TIMELINE_EVENTS: TimelineEvent[] = [
     icon: 'baby'
   }
 ];
+
