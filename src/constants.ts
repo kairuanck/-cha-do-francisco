@@ -7,13 +7,13 @@ export const PIX_CONFIG = {
 };
 
 export const EVENT_DETAILS = {
-  date: "25 de Novembro",       
-  time: "15:00 horas",          
-  locationName: "Casa da Vovó", 
-  address: "Rua Exemplo, 123, Porto Alegre - RS",
+  date: "25 de Abril",       
+  time: "16:00 horas",          
+  locationName: "Sava Iate Clube", 
+  address: "Av. Guaíba, 4127 - Vila Assunção, Porto Alegre",
   isTbd: false,
-  calendarStart: new Date(2025, 10, 25, 15, 0), 
-  calendarEnd: new Date(2025, 10, 25, 19, 0)
+  calendarStart: new Date(2025, 04, 25, 16, 0), 
+  calendarEnd: new Date(2025, 04, 25, 20, 0)
 };
 
 export const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVx-H0QOwuJeHU4SXti-OGmxSldslhzkQ4MvldvO7_uhS6XEr6gZFEO3v8WCbsMAY/exec"; 
