@@ -8,7 +8,7 @@ export const PIX_CONFIG = {
 
 export const EVENT_DETAILS = {
   date: "25 de Abril",       
-  time: "15:00 horas",          
+  time: "15 horas",          
   locationName: "Sava Iate Clube", 
   address: "Av Guaíba, 4127 - Vila Assunção, Porto Alegre",
   isTbd: false,
@@ -49,7 +49,7 @@ export const PHOTO_GALLERY = [
   {
     id: '5',
     url: 'https://i.postimg.cc/P5g232N8/05-A-alegria-de-ir-no-ultrassom.jpg',
-    caption: 'Todo ultrassom era o dia mais feliz — eles podiam me ver!'
+    caption: 'Todo ultrassom é o dia mais feliz — eles podem me ver!'
   },
   {
     id: '6',
@@ -59,7 +59,7 @@ export const PHOTO_GALLERY = [
   {
     id: '7',
     url: 'https://i.postimg.cc/MpCdPdXy/07-Faco-pose.jpg',
-    caption: 'E eu ajudo dando pose pra foto. Já nasci fotogênico!'
+    caption: 'E eu ajudo fazendo pose pra foto. Já sou fotogênico desde já!'
   },
   {
     id: '8',
@@ -79,17 +79,17 @@ export const PHOTO_GALLERY = [
   {
     id: '11',
     url: 'https://i.postimg.cc/N0RbWmrJ/11-ja-sei-que-vou-ser-mimado.jpg',
-    caption: 'Ainda não conheço o mundo lá fora, mas já sei que vou ser muito mimado!'
+    caption: 'Ainda não conheço o mundo lá fora, mas já sei que vou sou muito mimado!'
   },
   {
     id: '12',
     url: 'https://i.postimg.cc/wBDFSLs4/12-Familia-(achei-linda).jpg',
-    caption: 'Meu primeiro réveillon foi em família. No próximo, já estarei no carrinho!'
+    caption: 'Meu primeiro réveillon foi em família. No próximo, já estarei no colinho!'
   },
   {
     id: '13',
     url: 'https://i.postimg.cc/cJfTVwny/13-Nos-3.jpg',
-    caption: 'Dia 25/04 eu, mamãe e papai te esperamos. Os papais disseram que tu também me ama — e eu já quero te conhecer!'
+    caption: 'Dia 25/04 eu, mamãe e papai te esperamos! Os papais disseram que tu também me ama por isso quero te conhecer!'
   },
 ];
 
