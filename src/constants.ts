@@ -7,7 +7,7 @@ export const PIX_CONFIG = {
 };
 
 export const EVENT_DETAILS = {
-  date: "25 de Abril",       
+  date: "25 de Abril de 2026",       
   time: "15 horas",          
   locationName: "Sava Iate Clube", 
   address: "Av Guaíba, 4127 - Vila Assunção, Porto Alegre",
