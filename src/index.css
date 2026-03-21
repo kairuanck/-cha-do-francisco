@@ -1,8 +1,9 @@
-*, *::before, *::after {
-  color-scheme: light only;
+html[data-theme="light"], html[data-theme="light"] * {
+  color-scheme: light !important;
+  forced-color-adjust: none !important;
 }
 
 html, body, #root {
   background-color: #F9F7F2 !important;
-  color-scheme: light only;
+  color-scheme: light !important;
 }
