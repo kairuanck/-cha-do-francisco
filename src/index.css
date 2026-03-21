@@ -1,0 +1,8 @@
+*, *::before, *::after {
+  color-scheme: light only;
+}
+
+html, body, #root {
+  background-color: #F9F7F2 !important;
+  color-scheme: light only;
+}
